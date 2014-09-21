@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import org.hackgt.minusdata.adapters.NavDrawerListAdapter;
 import org.hackgt.minusdata.constants.Constants;
+import org.hackgt.minusdata.fragments.MapsFragment;
 import org.hackgt.minusdata.fragments.SearchFragment;
+import org.hackgt.minusdata.fragments.StockFragment;
 import org.hackgt.minusdata.model.NavDrawerItem;
 
 import android.app.Activity;
@@ -25,6 +27,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +38,17 @@ public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
- 
-    // nav drawer title
+    private String typeOfRequest;
+    
+    public String getTypeOfRequest() {
+		return typeOfRequest;
+	}
+
+	public void setTypeOfRequest(String typeOfRequest) {
+		this.typeOfRequest = typeOfRequest;
+	}
+
+	// nav drawer title
     private CharSequence mDrawerTitle;
  
     // used to store app title
@@ -71,18 +83,13 @@ public class MainActivity extends Activity {
         navDrawerItems = new ArrayList<NavDrawerItem>();
  
         // adding nav drawer items to array
-        // Home
+        // Search
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
         // Find People
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
         // Photos
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-        // Communities, Will add a counter here
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22"));
-        // Pages
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-        // What's hot, We  will add a counter here
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
+       
          
  
         // Recycle the typed array
@@ -143,7 +150,12 @@ public class MainActivity extends Activity {
         case 0:
             fragment = new SearchFragment();
             break;
-      
+        case 1:
+        	fragment = new MapsFragment();
+        	break;
+        case 2:
+        	fragment = new StockFragment();
+        	break;
         default:
             break;
         }
@@ -221,27 +233,62 @@ public class MainActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
     
+    public void getDirections(View view) {
+   		
+   		EditText from = (EditText)findViewById(R.id.maps_from_txt);
+   		String fromText = from.getText().toString();
+   		
+   		EditText to = (EditText) findViewById(R.id.maps_to_txt);
+   		String toText = to.getText().toString();
+   		
+   		Spinner spinner = (Spinner)findViewById(R.id.dtype_spinner);
+   		String dtype = spinner.getSelectedItem().toString();
+   		
+   		String message = fromText +" to "+toText+" directions "+dtype;
+   		
+   		
+   		Log.d("MESSAGEKYAHAI",message);
+   		SmsManager smsManager = SmsManager.getDefault();
+   		smsManager.sendTextMessage(Constants.mobileNo, null, message, null, null);
+   		
+   		Toast.makeText(getBaseContext(), "Message Sent", Toast.LENGTH_SHORT).show();
+   		
+   		//TextView replyBox = (TextView)findViewById(R.id.smsReply);
+   		
+   		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+   		imm.hideSoftInputFromWindow(from.getWindowToken(), 0);
+   		
+   		InputMethodManager imm2 = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+   		imm2.hideSoftInputFromWindow(to.getWindowToken(), 0);
+   		
+   		//replyBox.setText("Any moment now...");
+   		
+   		this.setTypeOfRequest("Maps");
+   	}
     
     /** Called when the user clicks the Send button */
-	public void sendMessage(View view) {
-		
-		EditText editText = (EditText) findViewById(R.id.edit_message);
-		String message = editText.getText().toString();
-		
-		SmsManager smsManager = SmsManager.getDefault();
-		smsManager.sendTextMessage(Constants.mobileNo, null, message, null, null);
-		
-		Toast.makeText(getBaseContext(), "Message Sent", Toast.LENGTH_SHORT).show();
-		
-		TextView replyBox = (TextView) findViewById(R.id.smsReply);
-		
-		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-		
-		replyBox.setText("Any moment now...");
-	}
-	
-	   
+   	public void sendMessage(View view) {
+   		
+   		EditText editText = (EditText)findViewById(R.id.edit_message);
+   		String message = editText.getText().toString();
+   		
+   		SmsManager smsManager = SmsManager.getDefault();
+   		smsManager.sendTextMessage(Constants.mobileNo, null, message, null, null);
+   		
+   		Toast.makeText(getBaseContext(), "Message Sent", Toast.LENGTH_SHORT).show();
+   		
+   		TextView replyBox = (TextView) findViewById(R.id.smsReply);
+   		
+   		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+   		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+   		
+   		replyBox.setText("Any moment now...");
+   		
+   	
+   		this.setTypeOfRequest("Search");
+   	
+   	}
+      
 }
 
 	
