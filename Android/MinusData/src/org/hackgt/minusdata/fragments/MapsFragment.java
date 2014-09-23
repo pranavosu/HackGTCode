@@ -16,6 +16,7 @@ import android.widget.Spinner;
 
 public class MapsFragment extends Fragment implements OnItemSelectedListener{
 
+	
 	public MapsFragment(){}
     
     @Override
@@ -34,9 +35,9 @@ public class MapsFragment extends Fragment implements OnItemSelectedListener{
      adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
      // Apply the adapter to the spinner
      spinner.setAdapter(adapter);
-     MainActivity activity = (MainActivity)getActivity();
      
-        if(bundle!=null && bundle.getBoolean("STARTED_BY_RECEIVER")==true ){//&& activity.getTypeOfRequest().equals("Search")){
+     MainActivity activity = (MainActivity) getActivity();
+        if(bundle!=null && bundle.getBoolean("STARTED_BY_RECEIVER")==true){//&&activity.getTypeOfRequest().equals("Maps")){
         	
         	
 //        	Log.d("MAPSSEARCH", bundle.getString("MSG_BODY"));

@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private String typeOfRequest;
-    
+
     public String getTypeOfRequest() {
 		return typeOfRequest;
 	}
@@ -253,7 +253,7 @@ public class MainActivity extends Activity {
    		
    		Toast.makeText(getBaseContext(), "Message Sent", Toast.LENGTH_SHORT).show();
    		
-   		//TextView replyBox = (TextView)findViewById(R.id.smsReply);
+   		/       /TextView replyBox = (TextView)findViewById(R.id.smsReply);
    		
    		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
    		imm.hideSoftInputFromWindow(from.getWindowToken(), 0);
